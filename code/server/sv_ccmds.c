@@ -1257,6 +1257,51 @@ static void SV_CompleteMapName( char *args, int argNum ) {
 	}
 }
 
+static char* go_fav_bots[] = {"xaero",    "sorlag",  "orbb",
+                              "klesk",    "doom",    "bones",
+                              "cadaver",  "major",   "grunt",
+                              "daemia",   "hossman", "slash"};
+static int go_fav_bots_len = 12;
+
+void SV_UseGoTeamSettings( void ) {
+	// make sure server is running
+	if ( !com_sv_running->integer ) {
+		Com_Printf( "Server is not running.\n" );
+		return;
+	}
+
+    if ( Cmd_Argc() != 2 ) {
+		Com_Printf ("Usage: go <number of clients>\n");
+        Com_Printf ("Description: This command sets up your current team-game map to have requested number of players.\n It also adds 'ThoughtWorks Go' team favorite bots in the 'red' team.\n");
+		return;
+	}
+
+    char* number_of_clients = Cmd_Argv(1);
+
+    int total_clients = atoi(number_of_clients);
+    
+    char cmd[1024];
+
+    strcpy(cmd, "sv_maxclients ");
+    strcat(cmd, number_of_clients);
+
+    Cmd_ExecuteString(cmd);
+
+    Cmd_ExecuteString("map_restart 0");
+
+    int total_reds = total_clients/2 + 1;
+    int i, bot_idx;
+    for(i = 0; i < total_reds; i++) {
+        bot_idx = i%go_fav_bots_len;
+        strcpy(cmd, "addbot ");
+        strcat(cmd, go_fav_bots[bot_idx]);
+        strcat(cmd, " 5 red");
+        Cmd_ExecuteString(cmd);
+    }
+
+    Com_Printf( "Using total clients: %5i\n", total_clients);
+}
+
 /*
 ==================
 SV_AddOperatorCommands
@@ -1308,6 +1353,7 @@ void SV_AddOperatorCommands( void ) {
 	Cmd_AddCommand("bandel", SV_BanDel_f);
 	Cmd_AddCommand("exceptdel", SV_ExceptDel_f);
 	Cmd_AddCommand("flushbans", SV_FlushBans_f);
+    Cmd_AddCommand("go", SV_UseGoTeamSettings);
 }
 
 /*
