@@ -241,7 +241,7 @@ SV_BoundMaxClients
 */
 static void SV_BoundMaxClients( int minimum ) {
 	// get the current maxclients value
-	Cvar_Get( "sv_maxclients", "20", 0 );
+	Cvar_Get( "sv_maxclients", "8", 0 );
 
 	sv_maxclients->modified = qfalse;
 
@@ -639,7 +639,7 @@ void SV_Init (void)
 	sv_mapname = Cvar_Get ("mapname", "nomap", CVAR_SERVERINFO | CVAR_ROM);
 	sv_privateClients = Cvar_Get ("sv_privateClients", "0", CVAR_SERVERINFO);
 	sv_hostname = Cvar_Get ("sv_hostname", "noname", CVAR_SERVERINFO | CVAR_ARCHIVE );
-	sv_maxclients = Cvar_Get ("sv_maxclients", "20", CVAR_SERVERINFO | CVAR_LATCH);
+	sv_maxclients = Cvar_Get ("sv_maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH);
 
 	sv_minRate = Cvar_Get ("sv_minRate", "0", CVAR_ARCHIVE | CVAR_SERVERINFO );
 	sv_maxRate = Cvar_Get ("sv_maxRate", "0", CVAR_ARCHIVE | CVAR_SERVERINFO );
