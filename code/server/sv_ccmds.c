@@ -1281,13 +1281,17 @@ void SV_UseGoTeamSettings( void ) {
     int total_clients = atoi(number_of_clients);
     
     char cmd[1024];
+    char count_str[4];
 
     strcpy(cmd, "sv_maxclients ");
-    strcat(cmd, number_of_clients);
+    sprintf(count_str, "%d", total_clients + 1);
+    strcat(cmd, count_str);
 
     Cmd_ExecuteString(cmd);
 
     Cmd_ExecuteString("map_restart 0");
+
+    Cmd_ExecuteString("kick allbots");
 
     int total_reds = total_clients/2 + 1;
     int i, bot_idx;
